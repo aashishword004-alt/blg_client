@@ -1,0 +1,114 @@
+
+        body {
+            background: #f4f7f5;
+            font-family: Arial, sans-serif;
+            padding-bottom: 85px;
+        }
+
+        .navbar {
+            background: #1b4332;
+        }
+
+        .navbar-brand {
+            color: white;
+            font-size: 24px;
+            font-weight: bold;
+        }
+
+        .navbar-brand:hover {
+            color: white;
+        }
+
+        .create-card {
+            background: white;
+            padding: 30px;
+            border-radius: 12px;
+            box-shadow: 0 3px 15px rgba(0,0,0,0.07);
+        }
+
+        .page-title {
+            color: #1b4332;
+            font-weight: bold;
+        }
+
+        .form-label {
+            font-weight: 600;
+            color: #333;
+        }
+
+        .form-control,
+        .form-select {
+            padding: 11px;
+            border-radius: 7px;
+        }
+
+        .form-control:focus,
+        .form-select:focus {
+            border-color: #2d6a4f;
+            box-shadow: 0 0 0 0.2rem rgba(45,106,79,0.15);
+        }
+
+        textarea {
+            resize: vertical;
+        }
+
+        .publish-btn {
+            background: #2d6a4f;
+            color: white;
+            padding: 10px 25px;
+            border: none;
+            border-radius: 7px;
+        }
+
+        .publish-btn:hover {
+            background: #1b4332;
+            color: white;
+        }
+
+        .cancel-btn {
+            padding: 10px 25px;
+            border-radius: 7px;
+        }
+
+        .bottom-nav {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            background: white;
+            display: flex;
+            justify-content: space-around;
+            align-items: center;
+            padding: 12px 5px;
+            box-shadow: 0 -3px 12px rgba(0,0,0,0.08);
+            z-index: 1000;
+        }
+
+        .nav-item {
+            text-decoration: none;
+            color: #777;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            font-size: 12px;
+            gap: 4px;
+        }
+
+        .nav-item i {
+            font-size: 23px;
+        }
+
+        .nav-item.active {
+            color: #2d6a4f;
+            font-weight: bold;
+        }
+
+        .nav-item:hover {
+            color: #2d6a4f;
+        }
+
+        @media(max-width: 576px) {
+            .create-card {
+                padding: 20px;
+            }
+        }

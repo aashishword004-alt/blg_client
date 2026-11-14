@@ -1,0 +1,153 @@
+
+        body {
+            background: #f4f7f5;
+            font-family: Arial, sans-serif;
+            padding-bottom: 85px;
+        }
+
+        /* Navbar */
+        .navbar {
+            background: #1b4332;
+        }
+
+        .navbar-brand {
+            color: white;
+            font-size: 24px;
+            font-weight: bold;
+        }
+
+        .navbar-brand:hover {
+            color: white;
+        }
+
+        /* Profile Header */
+        .profile-card {
+            background: white;
+            border-radius: 12px;
+            padding: 30px 20px;
+            text-align: center;
+            box-shadow: 0 3px 12px rgba(0,0,0,0.06);
+        }
+
+        .profile-image {
+            width: 120px;
+            height: 120px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 4px solid #d8f3dc;
+        }
+
+        .profile-name {
+            color: #1b4332;
+            font-weight: bold;
+            margin-top: 15px;
+        }
+
+        .profile-email {
+            color: #777;
+            font-size: 14px;
+        }
+
+        .profile-bio {
+            color: #666;
+            font-size: 14px;
+            max-width: 450px;
+            margin: 10px auto;
+        }
+
+        /* Buttons */
+        .edit-btn {
+            background: #2d6a4f;
+            color: white;
+            border: none;
+            padding: 9px 25px;
+            border-radius: 7px;
+        }
+
+        .edit-btn:hover {
+            background: #1b4332;
+            color: white;
+        }
+
+        /* Stats */
+        .stats-card {
+            background: white;
+            padding: 18px 10px;
+            border-radius: 10px;
+            text-align: center;
+            box-shadow: 0 3px 12px rgba(0,0,0,0.05);
+        }
+
+        .stats-card h4 {
+            color: #2d6a4f;
+            font-weight: bold;
+        }
+
+        .stats-card p {
+            color: #777;
+            margin: 0;
+            font-size: 13px;
+        }
+
+        /* Blog Cards */
+        .blog-card {
+            background: white;
+            border: none;
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 3px 12px rgba(0,0,0,0.06);
+        }
+
+        .blog-card img {
+            width: 100%;
+            height: 190px;
+            object-fit: cover;
+        }
+
+        .blog-card h5 {
+            color: #1b4332;
+            font-weight: bold;
+        }
+
+        .blog-card p {
+            color: #777;
+            font-size: 14px;
+        }
+
+        /* Bottom Navigation */
+        .bottom-nav {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            background: white;
+            display: flex;
+            justify-content: space-around;
+            align-items: center;
+            padding: 12px 5px;
+            box-shadow: 0 -3px 12px rgba(0,0,0,0.08);
+            z-index: 1000;
+        }
+
+        .nav-item {
+            text-decoration: none;
+            color: #777;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            font-size: 12px;
+            gap: 4px;
+        }
+
+        .nav-item i {
+            font-size: 23px;
+        }
+
+        .nav-item.active {
+            color: #2d6a4f;
+            font-weight: bold;
+        }
+
+        .nav-item:hover {
+            color: #2d6a4f;
+        }
