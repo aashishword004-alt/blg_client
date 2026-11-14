@@ -7,4 +7,4 @@ import Profile from './profile';
 import User from './user';
 import Footer from './footer';
 
-createRoot(document.getElementById('root')).render(<Home/>)
+createRoot(document.getElementById('root')).render(<User/>)
