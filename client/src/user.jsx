@@ -5,6 +5,7 @@ import "./user.css";
 import { ToastContainer } from "react-toastify";
 import { useEffect, useState } from "react";
 import { Showerror, Showmessage } from "./message";
+import Footer from "./footer";
 
 export default function User() {
 
@@ -143,29 +144,7 @@ export default function User() {
             </div>
 
             {/* Bottom Navigation */}
-            <footer className="bottom-nav">
-
-                <a href="home.html" className="nav-item">
-                    <i className="bi bi-house-door"></i>
-                    <span>Home</span>
-                </a>
-
-                <a href="create-blog.html" className="nav-item">
-                    <i className="bi bi-plus-square"></i>
-                    <span>Create Blog</span>
-                </a>
-
-                <a href="users.html" className="nav-item active">
-                    <i className="bi bi-people-fill"></i>
-                    <span>Users</span>
-                </a>
-
-                <a href="profile.html" className="nav-item">
-                    <i className="bi bi-person-circle"></i>
-                    <span>Profile</span>
-                </a>
-
-            </footer>
+           <Footer/>
 
         </div>
     );
