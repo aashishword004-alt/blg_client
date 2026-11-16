@@ -5,7 +5,7 @@ import axios from 'axios';
 import { Showerror, Showmessage } from './message';
 import { ToastContainer } from 'react-toastify';
 import { useCookies } from 'react-cookie';
-import { COOKIENAME } from './comman';
+import { TOKEN, USERID } from './comman';
 
 
 export default function Login() {
@@ -13,7 +13,8 @@ export default function Login() {
     const [email, Setemail] = useState('');
     const [pass, Setpass] = useState('');
 
-  //const [cookies, setCookie, removeCookie] = useCookies([COOKIENAME]);
+    const [cookies,setCookie] = useCookies([TOKEN, USERID])
+
     let navigate = useNavigate('')
     let userLogin = function (e) {
         let url = 'http://localhost:5000/api/users/login';
@@ -24,7 +25,7 @@ export default function Login() {
             email: email,
             password: pass
         }).then((response) => {
-            console.log(response.data);
+            //  console.log(response.data);
             let error = response.data[0]['error'];
             console.log(error)
             if (error !== 'no') {
@@ -39,17 +40,22 @@ export default function Login() {
                 }
                 else {
                     Showmessage(message)
-                    //setCookie('token',response.data[3]['token']);
+                    setCookie('token', response.data[3]['token'], {path:'/',maxAge: 86400});
+                    setCookie(USERID, response.data[4]['id'],{path: "/",maxAge: 86400});
                     setTimeout(() => {
-
                         navigate('/home');
                     }, 2000)
 
                 }
             }
         }).catch((error) => {
-            Showerror('This is server error',);
-           // alert(error);
+            if (error.status === 401) {
+                Showerror('Invalid Password')
+            }
+            if (error.status === 404) {
+                Showerror('User not Found')
+            }
+            //alert(error);
             //console.log(error)
 
         })
@@ -132,13 +138,6 @@ export default function Login() {
                                         onChange={(e) => Setpass(e.target.value)}
                                         required=""
                                     />
-                                    <button
-                                        className="input-group-text password-toggle"
-                                        type="button"
-                                        onclick="togglePassword()"
-                                    >
-                                        <i className="bi bi-eye" id="eyeIcon" />
-                                    </button>
                                 </div>
                             </div>
                             {/* Remember Me and Forgot Password */}

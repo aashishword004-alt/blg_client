@@ -22,7 +22,7 @@ export default function User() {
             url: url
         }).then((response) => {
 
-            console.log(response.data);
+            //console.log(response.data);
 
             let error = response.data[0]['error'];
 

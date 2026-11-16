@@ -5,6 +5,7 @@ import './home.css';
 import Nevbar from './navbar';
 import { Showerror, Showmessage } from './message';
 import { ToastContainer } from 'react-toastify';
+
 export default function Home() {
   const [blog, Setblog] = useState([]);
   useEffect(() => {
@@ -14,7 +15,7 @@ export default function Home() {
       responseType: 'json',
       url: url
     }).then((response) => {
-      console.log(response.data);
+      //console.log(response.data);
       let error = response.data[0]['error'];
       if (error !== 'no') {
         Showerror(error)
@@ -28,7 +29,7 @@ export default function Home() {
         else {
           Showmessage(message)
           Setblog(response.data[3].data);
-          console.log(response.data[3].data);
+         // console.log(response.data[3].data);
 
         }
       }
