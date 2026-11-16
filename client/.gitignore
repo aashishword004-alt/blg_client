@@ -12,6 +12,9 @@ dist
 dist-ssr
 *.local
 
+src/comman.jsx
+src/cookie.jsx
+
 # Editor directories and files
 .vscode/*
 !.vscode/extensions.json

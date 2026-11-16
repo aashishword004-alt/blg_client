@@ -1,33 +1,66 @@
 import { useState } from 'react';
 import './login.css';
-import { Link } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
 import axios from 'axios';
+import { Showerror, Showmessage } from './message';
+import { ToastContainer } from 'react-toastify';
+import { useCookies } from 'react-cookie';
+import { COOKIENAME } from './comman';
+
 
 export default function Login() {
-   const [email,Setemail] = useState('');
-   const [pass,Setpass] = useState('');
-    let userLogin = function()
-    {
-    let url = 'http://localhost:5000/api/users/login';
-    let Form = new FormData();
-    Form.append('emial',email);
-    Form.append('password',pass);
-    axios({
-        method:'POST',
-        responseType:'json',
-        url:url,
-        data:Form
-    }).then((response) =>{
-      console.log(response.data)
-    }).catch((error) =>{
 
-    })
+    const [email, Setemail] = useState('');
+    const [pass, Setpass] = useState('');
+
+  //const [cookies, setCookie, removeCookie] = useCookies([COOKIENAME]);
+    let navigate = useNavigate('')
+    let userLogin = function (e) {
+        let url = 'http://localhost:5000/api/users/login';
+        e.preventDefault();
+
+
+        axios.post(url, {
+            email: email,
+            password: pass
+        }).then((response) => {
+            console.log(response.data);
+            let error = response.data[0]['error'];
+            console.log(error)
+            if (error !== 'no') {
+                Showerror(error)
+            }
+
+            else {
+                let success = response.data[1]['success'];
+                let message = response.data[2]['message'];
+                if (success == 'no') {
+                    Showerror(message)
+                }
+                else {
+                    Showmessage(message)
+                    //setCookie('token',response.data[3]['token']);
+                    setTimeout(() => {
+
+                        navigate('/home');
+                    }, 2000)
+
+                }
+            }
+        }).catch((error) => {
+            Showerror('This is server error',);
+           // alert(error);
+            //console.log(error)
+
+        })
+
     }
 
     return (<>
         <div className="container-fluid login-container">
             <div className="row min-vh-100">
                 {/* Left Section */}
+                <ToastContainer />
                 <div className="col-lg-6 left-section d-none d-lg-flex">
                     <div className="left-content">
                         <h1>
@@ -76,6 +109,8 @@ export default function Login() {
                                         className="form-control"
                                         placeholder="Enter your email"
                                         name="email"
+                                        value={email}
+                                        onChange={(e) => Setemail(e.target.value)}
                                         required=""
                                     />
                                 </div>
@@ -93,6 +128,8 @@ export default function Login() {
                                         id="password"
                                         placeholder="Enter your password"
                                         name="password"
+                                        value={pass}
+                                        onChange={(e) => Setpass(e.target.value)}
                                         required=""
                                     />
                                     <button
