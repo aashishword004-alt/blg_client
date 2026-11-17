@@ -8,7 +8,7 @@ export default function Footer()
                 <i className="bi bi-house-door" />
                 <span>Home</span>
             </Link>
-            <Link to="/" className="nav-item active">
+            <Link to="/c_blog" className="nav-item active">
                 <i className="bi bi-plus-square-fill" />
                 <span>Create Blog</span>
             </Link>

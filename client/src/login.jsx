@@ -13,7 +13,7 @@ export default function Login() {
     const [email, Setemail] = useState('');
     const [pass, Setpass] = useState('');
 
-    const [cookies,setCookie] = useCookies([TOKEN, USERID])
+    const [cookies, setCookie] = useCookies([TOKEN, USERID])
 
     let navigate = useNavigate('')
     let userLogin = function (e) {
@@ -27,21 +27,22 @@ export default function Login() {
         }).then((response) => {
             //  console.log(response.data);
             let error = response.data[0]['error'];
-            console.log(error)
+
+            let success = response.data[1]['success'];
+            let message = response.data[2]['message'];
+            //console.log(error)
             if (error !== 'no') {
-                Showerror(error)
+                Showerror(message)
             }
 
             else {
-                let success = response.data[1]['success'];
-                let message = response.data[2]['message'];
                 if (success == 'no') {
                     Showerror(message)
                 }
                 else {
                     Showmessage(message)
-                    setCookie('token', response.data[3]['token'], {path:'/',maxAge: 86400});
-                    setCookie(USERID, response.data[4]['id'],{path: "/",maxAge: 86400});
+                    setCookie('token', response.data[3]['token'], { path: '/', maxAge: 86400 });
+                    setCookie(USERID, response.data[4]['id'], { path: "/", maxAge: 86400 });
                     setTimeout(() => {
                         navigate('/home');
                     }, 2000)

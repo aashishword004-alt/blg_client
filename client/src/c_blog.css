@@ -1,0 +1,69 @@
+
+        body {
+            background: #f5f7f6;
+            font-family: Arial, sans-serif;
+        }
+
+        .navbar {
+            background: #1b4332;
+        }
+
+        .navbar-brand {
+            color: white;
+            font-weight: bold;
+        }
+
+        .create-container {
+            max-width: 950px;
+            margin: 35px auto;
+        }
+
+        .form-card {
+            background: white;
+            padding: 30px;
+            border-radius: 12px;
+            box-shadow: 0 3px 15px rgba(0,0,0,0.06);
+        }
+
+        .page-title {
+            color: #1b4332;
+            font-weight: 700;
+        }
+
+        .form-label {
+            font-weight: 600;
+            color: #344e41;
+        }
+
+        .form-control, .form-select {
+            padding: 11px;
+            border-radius: 7px;
+        }
+
+        .form-control:focus, .form-select:focus {
+            border-color: #40916c;
+            box-shadow: 0 0 0 0.2rem rgba(64,145,108,.15);
+        }
+
+        .btn-create {
+            background: #1b4332;
+            color: white;
+        }
+
+        .btn-create:hover {
+            background: #2d6a4f;
+            color: white;
+        }
+
+        .image-preview {
+            width: 100%;
+            max-height: 250px;
+            object-fit: cover;
+            border-radius: 8px;
+            display: none;
+            margin-top: 12px;
+        }
+
+        .required {
+            color: red;
+        }

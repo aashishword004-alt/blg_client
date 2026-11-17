@@ -11,29 +11,30 @@ import Login from './login';
 import Forgotpassword from './forgotpassword';
 import { CookiesProvider } from 'react-cookie';
 import Cookie from './cookie';
-
-function App()
-{
-    return(
-     <BrowserRouter>
-     <Routes>
-        <Route path='/' element={<Login/>} />
-        <Route path='/register' element={<Register/>} />
-        <Route path='/forgotpassword' element={<Forgotpassword/>} />
-       
-        <Route element={<Cookie/>}>
-        
-        <Route path='/home' element={<Home/>} />
-        <Route path='/user' element={<User/>}/>
-        <Route path='/profile' element={<Profile/>} />
-        
-        </Route>
-        <Route path="*" element={<NotFound />} />
+import View_blog from './view_blog';
+import Create_blog from './c_blog';
+function App() {
+   return (
+      <BrowserRouter>
+         <Routes>
+            <Route path='/' element={<Login />} />
+            <Route path='/register' element={<Register />} />
+            <Route path='/forgotpassword' element={<Forgotpassword />} />
 
 
-     </Routes>
-     </BrowserRouter>
-    )
+            <Route element={<Cookie />}>
+               <Route path='/home' element={<Home />} />
+               <Route path='/user' element={<User />} />
+               <Route path='/profile' element={<Profile />} />
+               <Route path='/view_blog/:id' element={<View_blog />} />
+               <Route path='/c_blog' element={<Create_blog/>} />
+            </Route>
+
+            <Route path="*" element={<NotFound />} />
+
+
+         </Routes>
+      </BrowserRouter>
+   )
 }
-createRoot(document.getElementById('root')).render(<CookiesProvider>
-   <App/> </CookiesProvider>)
+createRoot(document.getElementById('root')).render(<CookiesProvider><App/></CookiesProvider>)
