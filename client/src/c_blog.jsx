@@ -1,219 +1,111 @@
 
 import { useState, useEffect } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import axios from 'axios';
-import { useCookies } from 'react-cookie';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
 import './c_blog.css';
+import { TOKEN, USERID } from './comman';
+import { Showerror } from './message';
+import { useCookies } from 'react-cookie';
 
 export default function Create_blog() {
 
-    const [cookies] = useCookies(['token']);
-    const navigate = useNavigate();
-
-    const [categories, setCategories] = useState([]);
-
-    const [formData, setFormData] = useState({
-        title: '',
-        excerpt: '',
-        content: '',
-        categoryId: '',
-        status: 'draft'
-    });
-
-    const [coverImage, setCoverImage] = useState(null);
-    const [preview, setPreview] = useState('');
-
-    const [loading, setLoading] = useState(false);
-    const [categoryLoading, setCategoryLoading] = useState(true);
+    const [cat, Setcat] = useState([]);
+    const [cookie] = useCookies([TOKEN,USERID])
+    const userid = cookie[USERID]
+    // Generate Slug from Title
+    const GenerateSlug = (title) => {
+        return title
+            .toLowerCase()
+            .trim()
+            .replace(/[^a-z0-9\s-]/g, '')
+            .replace(/\s+/g, '-')
+            .replace(/-+/g, '-');
+    };
 
 
-    // Fetch Categories
+    // Fetch Category
     useEffect(() => {
 
-        const getCategories = async () => {
+        let url = 'http://localhost:5000/api/category/';
 
-            try {
+        axios({
+            method: 'get',
+            responseType: 'json',
+            url: url
+        })
+            .then((response) => {
 
-                const response = await axios.get(
-                    'http://localhost:5000/api/category/'
-                );
+                console.log(response.data);
 
-                if (response.data[1]?.success === 'yes') {
+                let error = response.data[0].error;
+                let success = response.data[1].success;
+                let message = response.data[2].message;
 
-                    setCategories(response.data[3]?.data || []);
-
-                } else {
-
-                    toast.error('Unable to load categories');
-
+                if (error !== 'no') {
+                    Showerror(message);
+                }
+                else if (success === 'no') {
+                    Showerror(message);
+                }
+                else {
+                    Setcat(response.data[3].data);
                 }
 
-            } catch (error) {
-
+            })
+            .catch((error) => {
                 console.log(error);
-
-                toast.error('Category loading failed');
-
-            } finally {
-
-                setCategoryLoading(false);
-
-            }
-
-        };
-
-        getCategories();
+                Showerror("Unable to fetch categories");
+            });
 
     }, []);
 
 
-    // Handle Input Changes
-    const handleChange = (e) => {
-
-        const { name, value } = e.target;
-
-        setFormData((prev) => ({
-            ...prev,
-            [name]: value
-        }));
-
-    };
-
-
-    // Generate Slug
-    const slug = formData.title
-        .trim()
-        .toLowerCase()
-        .replace(/[^a-z0-9]+/g, '-')
-        .replace(/^-|-$/g, '');
-
-
-    // Handle Image
-    const handleImage = (e) => {
-
-        const file = e.target.files[0];
-
-        if (file) {
-
-            if (!file.type.startsWith('image/')) {
-                toast.error('Please select a valid image');
-                return;
-            }
-
-            setCoverImage(file);
-
-            setPreview(URL.createObjectURL(file));
-
-        }
-
-    };
-
-
-    // Submit Blog
-    const handleSubmit = async (e) => {
+    // Create Blog
+    const Create = async function (e) {
 
         e.preventDefault();
 
-        if (!coverImage) {
+        let form = e.currentTarget;
+        let formdata = new FormData(form);
 
-            toast.error('Please select a cover image');
+        let url = `http://localhost:5000/api/post/create/${userid}`;
 
-            return;
-
-        }
-
-        if (!formData.categoryId) {
-
-            toast.error('Please select a category');
-
-            return;
-
-        }
-
-        if (!cookies.token) {
-
-            toast.error('Please login first');
-
-            return;
-
-        }
-
-        const data = new FormData();
-
-        data.append('title', formData.title);
-        data.append('excerpt', formData.excerpt);
-        data.append('content', formData.content);
-        data.append('categoryId', formData.categoryId);
-        data.append('status', formData.status);
-        data.append('coverImage', coverImage);
-
-        try {
-
-            setLoading(true);
-
-            const response = await axios.post(
-                'http://localhost:5000/api/post/create',
-                data,
-                {
-                    headers: {
-                        Authorization: `Bearer ${cookies.token}`
-                    }
-                }
-            );
-
-            if (response.data[1]?.success === 'yes') {
-
-                toast.success('Blog created successfully!');
-
-                setTimeout(() => {
-
-                    navigate('/home');
-
-                }, 1500);
-
-            } else {
-
-                toast.error(
-                    response.data[2]?.message || 'Blog creation failed'
-                );
-
+        axios({
+            method: 'post',
+            responseType: 'json',
+            url: url,
+            data: formdata,
+            headers: {
+                Authorization: `Bearer ${TOKEN}`
             }
+        })
+            .then((response) => {
 
-        } catch (error) {
+                console.log(response.data);
 
-            console.log(error);
+                let error = response.data[0].error;
+                let success = response.data[1].success;
+                let message = response.data[2].message;
 
-            toast.error(
-                error.response?.data?.[2]?.message ||
-                error.response?.data?.message ||
-                'Something went wrong while creating blog'
-            );
+                if (error !== 'no') {
+                    Showerror(message);
+                }
+                else if (success === 'no') {
+                    Showerror(message);
+                }
+                else {
+                    toast.success("Blog created successfully!");
+                    form.reset();
+                }
 
-        } finally {
-
-            setLoading(false);
-
-        }
-
-    };
-
-
-    // Clear Form
-    const handleReset = () => {
-
-        setFormData({
-            title: '',
-            excerpt: '',
-            content: '',
-            categoryId: '',
-            status: 'draft'
-        });
-
-        setCoverImage(null);
-        setPreview('');
+            })
+            .catch((error) => {
+                console.log(error);
+                Showerror("Something went wrong!");
+            });
 
     };
 
@@ -222,15 +114,12 @@ export default function Create_blog() {
 
         <>
 
-            <ToastContainer position="top-right" autoClose={2000} />
-
             {/* Navbar */}
-
             <nav className="navbar navbar-expand-lg">
 
                 <div className="container">
 
-                    <Link className="navbar-brand" to="/home">
+                    <Link className="navbar-brand" to="/">
                         My Blog
                     </Link>
 
@@ -247,18 +136,21 @@ export default function Create_blog() {
 
 
             {/* Create Blog Form */}
-
             <div className="container create-container">
 
-                <div className="mb-4">
+                <div className="d-flex justify-content-between align-items-center mb-4">
 
-                    <h2 className="page-title">
-                        Create New Blog
-                    </h2>
+                    <div>
 
-                    <p className="text-muted mb-0">
-                        Write and publish your blog post.
-                    </p>
+                        <h2 className="page-title">
+                            Create New Blog
+                        </h2>
+
+                        <p className="text-muted mb-0">
+                            Write and publish your blog post.
+                        </p>
+
+                    </div>
 
                 </div>
 
@@ -266,13 +158,12 @@ export default function Create_blog() {
                 <div className="form-card">
 
                     <form
-                        onSubmit={handleSubmit}
+                        id="createBlogForm"
                         encType="multipart/form-data"
+                        onSubmit={Create}
                     >
 
-
                         {/* Title */}
-
                         <div className="mb-3">
 
                             <label className="form-label">
@@ -282,18 +173,20 @@ export default function Create_blog() {
                             <input
                                 type="text"
                                 className="form-control"
+                                id="title"
                                 name="title"
                                 placeholder="Enter blog title"
-                                value={formData.title}
-                                onChange={handleChange}
                                 required
+                                onChange={(e) => {
+                                    document.getElementById('slug').value =
+                                        GenerateSlug(e.target.value);
+                                }}
                             />
 
                         </div>
 
 
                         {/* Slug */}
-
                         <div className="mb-3">
 
                             <label className="form-label">
@@ -303,8 +196,10 @@ export default function Create_blog() {
                             <input
                                 type="text"
                                 className="form-control"
-                                value={slug}
+                                id="slug"
+                                name="slug"
                                 placeholder="blog-title"
+                                required
                                 readOnly
                             />
 
@@ -316,7 +211,6 @@ export default function Create_blog() {
 
 
                         {/* Excerpt */}
-
                         <div className="mb-3">
 
                             <label className="form-label">
@@ -326,10 +220,8 @@ export default function Create_blog() {
                             <textarea
                                 className="form-control"
                                 name="excerpt"
-                                rows="3"
+                                rows={3}
                                 placeholder="Write a short description..."
-                                value={formData.excerpt}
-                                onChange={handleChange}
                                 required
                             />
 
@@ -337,7 +229,6 @@ export default function Create_blog() {
 
 
                         {/* Content */}
-
                         <div className="mb-3">
 
                             <label className="form-label">
@@ -347,10 +238,8 @@ export default function Create_blog() {
                             <textarea
                                 className="form-control"
                                 name="content"
-                                rows="10"
+                                rows={10}
                                 placeholder="Write your blog content here..."
-                                value={formData.content}
-                                onChange={handleChange}
                                 required
                             />
 
@@ -358,7 +247,6 @@ export default function Create_blog() {
 
 
                         {/* Cover Image */}
-
                         <div className="mb-3">
 
                             <label className="form-label">
@@ -368,30 +256,16 @@ export default function Create_blog() {
                             <input
                                 type="file"
                                 className="form-control"
+                                id="coverImage"
+                                name="coverImage"
                                 accept="image/*"
-                                onChange={handleImage}
                                 required
                             />
-
-                            {preview && (
-
-                                <div className="mt-3">
-
-                                    <img
-                                        src={preview}
-                                        className="image-preview"
-                                        alt="Cover preview"
-                                    />
-
-                                </div>
-
-                            )}
 
                         </div>
 
 
                         {/* Category */}
-
                         <div className="mb-3">
 
                             <label className="form-label">
@@ -400,25 +274,22 @@ export default function Create_blog() {
 
                             <select
                                 className="form-select"
-                                name="categoryId"
-                                value={formData.categoryId}
-                                onChange={handleChange}
+                                name="categoryname"
+                                id="categoryname"
                                 required
                             >
 
                                 <option value="">
-                                    {categoryLoading
-                                        ? 'Loading categories...'
-                                        : 'Select Category'}
+                                    Select Category
                                 </option>
 
-                                {categories.map((category) => (
+                                {cat.map((ct) => (
 
                                     <option
-                                        key={category._id}
-                                        value={category._id}
+                                        key={ct._id}
+                                        value={ct.name}
                                     >
-                                        {category.name}
+                                        {ct.name}
                                     </option>
 
                                 ))}
@@ -429,7 +300,6 @@ export default function Create_blog() {
 
 
                         {/* Status */}
-
                         <div className="mb-4">
 
                             <label className="form-label">
@@ -439,8 +309,7 @@ export default function Create_blog() {
                             <select
                                 className="form-select"
                                 name="status"
-                                value={formData.status}
-                                onChange={handleChange}
+                                id="status"
                                 required
                             >
 
@@ -458,29 +327,19 @@ export default function Create_blog() {
 
 
                         {/* Buttons */}
-
                         <div className="d-flex gap-2">
 
                             <button
                                 type="submit"
                                 className="btn btn-create px-4"
-                                disabled={loading || categoryLoading}
                             >
-
                                 <i className="bi bi-plus-circle"></i>
-
-                                {loading
-                                    ? ' Creating...'
-                                    : ' Create Blog'}
-
+                                {' '}Create Blog
                             </button>
 
-
                             <button
-                                type="button"
+                                type="reset"
                                 className="btn btn-outline-secondary px-4"
-                                onClick={handleReset}
-                                disabled={loading}
                             >
                                 Clear
                             </button>
@@ -492,6 +351,8 @@ export default function Create_blog() {
                 </div>
 
             </div>
+
+            <ToastContainer />
 
         </>
 

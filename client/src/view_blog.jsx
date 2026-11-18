@@ -96,7 +96,7 @@ export default function View_blog() {
                         {/* Category */}
 
                         <span className="blog-category">
-                            {items.categoryId?.name}
+                            {items.categoryname}
                         </span>
 
                         {/* Blog Title */}

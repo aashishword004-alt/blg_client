@@ -312,7 +312,7 @@ export default function Profile() {
                                     <div className="card-body">
 
                                         <small className="text-success fw-bold">
-                                            {blog.categoryId?.name || "Uncategorized"}
+                                            {blog.categoryname || "Uncategorized"}
                                         </small>
 
                                         <h5 className="mt-2">

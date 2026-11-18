@@ -75,7 +75,7 @@ export default function Home() {
 
           <div className="card-body">
             <small className="text-success fw-bold">
-              {items.categoryId?.name}
+              {items.categoryname}
             </small>
 
             <h5 className="mt-2">{items.title}</h5>

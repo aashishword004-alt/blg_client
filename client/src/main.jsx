@@ -27,7 +27,7 @@ function App() {
                <Route path='/user' element={<User />} />
                <Route path='/profile' element={<Profile />} />
                <Route path='/view_blog/:id' element={<View_blog />} />
-               <Route path='/c_blog' element={<Create_blog/>} />
+               <Route path='/c_blog/' element={<Create_blog/>} />
             </Route>
 
             <Route path="*" element={<NotFound />} />
